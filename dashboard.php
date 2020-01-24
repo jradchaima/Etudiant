@@ -2,6 +2,8 @@
 session_start();
 include 'classes/user.class.php';
 
+
+
 if(isset($_SESSION['email']) =="") {
     header("Location: login.php");
 }
@@ -16,8 +18,9 @@ $department=$_POST['department'];
 $address=$_POST['address']; 
 $mobileno=$_POST['mobileno'];
 $sexe= $_POST['gender'];
+$date=$_POST['dob'];
 $userr = new User;
-$userr->update($fname,$lname,$department,$address,$sexe,$mobileno,$eid);
+$userr->update($fname,$lname,$department,$address,$sexe,$mobileno,$eid,$date);
 
 }
 
@@ -25,67 +28,41 @@ $userr->update($fname,$lname,$department,$address,$sexe,$mobileno,$eid);
 
 <!DOCTYPE html>
 <html lang="en">
-    <head>
-        
-        <!-- Title -->
-        <title>Admin | Update Employee</title>
-        
-        <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
-        <meta charset="UTF-8">
-        <meta name="description" content="Responsive Admin Dashboard Template" />
-        <meta name="keywords" content="admin,dashboard" />
-        <meta name="author" content="Steelcoders" />
-        
-        <!-- Styles -->
-        <link type="text/css" rel="stylesheet" href="assets/plugins/materialize/css/materialize.min.css"/>
-        <link href="http://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
-        <link href="assets/plugins/material-preloader/css/materialPreloader.min.css" rel="stylesheet"> 
-        <link href="assets/css/alpha.min.css" rel="stylesheet" type="text/css"/>
-        <link href="assets/css/custom.css" rel="stylesheet" type="text/css"/>
-  <style>
-        .errorWrap {
-    padding: 10px;
-    margin: 0 0 20px 0;
-    background: #fff;
-    border-left: 4px solid #dd3d36;
-    -webkit-box-shadow: 0 1px 1px 0 rgba(0,0,0,.1);
-    box-shadow: 0 1px 1px 0 rgba(0,0,0,.1);
-}
-.succWrap{
-    padding: 10px;
-    margin: 0 0 20px 0;
-    background: #fff;
-    border-left: 4px solid #5cb85c;
-    -webkit-box-shadow: 0 1px 1px 0 rgba(0,0,0,.1);
-    box-shadow: 0 1px 1px 0 rgba(0,0,0,.1);
-}
-        </style>
 
+<head>
+    <!-- Required meta tags-->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="Colorlib Templates">
+    <meta name="author" content="Colorlib">
+    <meta name="keywords" content="Colorlib Templates">
 
+    <!-- Title Page-->
+    <title>Au Register Forms by Colorlib</title>
 
+    <!-- Icons font CSS-->
+    <link href="../vend/mdi-font/css/material-design-iconic-font.min.css" rel="stylesheet" media="all">
+    <link href="../vend/font-awesome-4.7/css/font-awesome.min.css" rel="stylesheet" media="all">
+    <!-- Font special for pages-->
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i,800,800i" rel="stylesheet">
 
+    <!-- Vendor CSS-->
+    <link href="../vend/select2/select2.min.css" rel="stylesheet" media="all">
+    <link href="../vend/datepicker/daterangepicker.css" rel="stylesheet" media="all">
 
-    </head>
-    <body>
+    <!-- Main CSS-->
+    <link href="../cs/main.css" rel="stylesheet" media="all">
+</head>
 
-   <main class="mn-inner">
-                <div class="row">
-                    <div class="col s12">
-                        <div class="page-title">Update employee</div>
-                    </div>
-                    <div class="col s12 m12 l12">
-                        <div class="card">
-                            <div class="card-content">
-                                <form id="example-form" method="post" name="updatemp">
-                                    <div>
-                                        <h3>Update Employee Info</h3>
-                             
-                                        <section>
-                                            <div class="wizard-content">
-                                                <div class="row">
-                                                    <div class="col m6">
-                                                        <div class="row">
-<?php 
+<body>
+    
+    <div class="page-wrapper bg-gra-03 p-t-45 p-b-50">
+        <div class="wrapper wrapper--w790">
+            <div class="card card-5">
+                <div class="card-heading">
+                    <h2 class="title">Update employee</h2>
+                </div>
+                <?php 
 $eid=$_SESSION['email'];
 $user = new User;
 $query=$user->select($eid);
@@ -95,100 +72,150 @@ if($query->rowCount() > 0)
 {
 foreach($results as $result)
 {               ?> 
- <div class="input-field col  s12">
-<label for="empcode">Employee Code</label>
-<input  name="empcode" id="empcode" value="<?php echo htmlentities($result->empid);?>" type="text" autocomplete="off" readonly required>
-<span id="empid-availability" style="font-size:12px;"></span> 
-</div>
+                <div class="card-body">
+                    <form method="POST">
+                        <div class="form-row m-b-55">
+                            <div class="name">Name
 
-
-<div class="input-field col m6 s12">
-<label for="firstName">First name</label>
-<input id="firstName" name="firstName" value="<?php echo htmlentities($result->first_name);?>"  type="text" required>
-</div>
-
-<div class="input-field col m6 s12">
-<label for="lastName">Last name </label>
-<input id="lastName" name="lastName" value="<?php echo htmlentities($result->last_name);?>" type="text" autocomplete="off" required>
-</div>
-
-<div class="input-field col s12">
-<label for="email">Email</label>
-<input  name="email" type="email" id="email" value="<?php echo htmlentities($result->email);?>" readonly autocomplete="off" required>
-<span id="emailid-availability" style="font-size:12px;"></span> 
-</div>
-
-<div class="input-field col s12">
-<label for="phone">Mobile number</label>
-<input id="phone" name="mobileno" type="tel" value="<?php echo htmlentities($result->telephone);?>" maxlength="10" autocomplete="off" required>
- </div>
-
-</div>
-</div>
-                                                    
-<div class="col m6">
-<div class="row">
-<div class="input-field col m6 s12">
-<select  name="gender" autocomplete="off">
-<option value="<?php echo htmlentities($result->sexe);?>"><?php echo htmlentities($result->sexe);?></option>                                          
-<option value="Male">Male</option>
-<option value="Female">Female</option>
-<option value="Other">Other</option>
-</select>
-</div>
-                                              
-
-<div class="input-field col m6 s12">
-<select  name="department" autocomplete="off">
-<option value="<?php echo htmlentities($result->departmentname);?>"><?php echo htmlentities($result->departementname);?></option>
-
-</select>
-</div>
-
-<div class="input-field col m6 s12">
-<label for="address">Address</label>
-<input id="address" name="address" type="text"  value="<?php echo htmlentities($result->city);?>" autocomplete="off" required>
-</div>
-<a href="logout.php" class="btn btn-primary">Logout</a>
-
-
-   
-
-                                                            
-
-<?php }}?>
-                                                        
-<div class="input-field col s12">
-<button type="submit" name="update"  id="update" class="waves-effect waves-light btn indigo m-b-xs">UPDATE</button>
-
-</div>
-
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </section>
-                                     
-                                    
-                                        </section>
+                            </div>
+                            <div class="value">
+                                <div class="row row-space">
+                                
+                                        <div class="input-group-desc">
+                                            <input class="input--style-5" type="text" name="firstName" value="<?php echo htmlentities($result->first_name);?>" autocomplete="off" >
+                                            <label class="label--desc">First name</label>
+                                       
                                     </div>
-                                </form>
+                                
+                                        <div class="input-group-desc">
+                                            <input class="input--style-5" type="text" name="lastName" value="<?php echo htmlentities($result->last_name);?>" autocomplete="off" >
+                                            <label class="label--desc">last name</label>
+                                    
+                                    </div>
+                                </div>
                             </div>
                         </div>
-                    </div>
+
+                        <div class="form-row">
+                            <div class="name"> Employee Code</div>
+                            <div class="value">
+                                <div class="input-group">
+                                    <input class="input--style-5" type="text" name="empcode" value="<?php echo htmlentities($result->empid);?>"readonly autocomplete="off">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="name">Email</div>
+                            <div class="value">
+                                <div class="input-group">
+                                    <input class="input--style-5" type="email" name="email" value="<?php echo htmlentities($result->email);?>"autocomplete="off" readonly>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="form-row">
+                            <div class="name">User name</div>
+                            <div class="value">
+                                <div class="input-group">
+                                    <input class="input--style-5" type="text" name="username" value="<?php echo htmlentities($result->username);?>" autocomplete="off" >
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="form-row">
+                            <div class="name">Address</div>
+                            <div class="value">
+                                <div class="input-group">
+                                    <input class="input--style-5" type="text" name="address" value="<?php echo htmlentities($result->city);?>" autocomplete="off" >
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="form-row">
+                            <div class="name">Phone</div>
+                            <div class="value">
+                                <div class="input-group">
+                                    <input class="input--style-5" type="text" name="mobileno" value="<?php echo htmlentities($result->telephone);?>" autocomplete="off" >
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="form-row">
+                            <div class="name">Date de naissance</div>
+                            <div class="value">
+                                <div class="input-group">
+                                    <input class="input--style-5" type="date" class="datepicker" name="dob" value="<?php echo htmlentities($result->date_naissance);?>" autocomplete="off" >
+                                </div>
+                            </div>
+                        </div>
+
+
+                      
+                        <div class="form-row">
+                            <div class="name">Sexe</div>
+                            <div class="value">
+                                <div class="input-group">
+                                    <div class="rs-select2 js-select-simple select--no-search">
+                                        <select name="gender">
+                                        <option value="<?php echo htmlentities($result->sexe);?>"><?php echo htmlentities($result->sexe);?></option>                                          
+                                        <option value="Male">Male</option>
+                                        <option value="Female">Female</option>
+                                         <option value="Other">Other</option>
+                                        </select>
+                                        <div class="select-dropdown"></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                             
+                        <div class="form-row">
+                            <div class="name">Departement</div>
+                            <div class="value">
+                                <div class="input-group">
+                                    <div class="rs-select2 js-select-simple select--no-search">
+<select  name="department" autocomplete="off">
+<option value="<?php echo htmlentities($result->departementname);?>"><?php echo htmlentities($result->departementname);?></option>
+<?php
+$use = new User;
+$query=$use->departement();
+$results=$query->fetchAll(PDO::FETCH_OBJ);
+$cnt=1;
+
+if($query->rowCount() > 0)
+{
+foreach($results as $resultt)
+{   ?>                                            
+<option value="<?php echo htmlentities($resultt->depname);?>"><?php echo htmlentities($resultt->depname);?></option>
+<?php }} ?>
+</select>
+<div class="select-dropdown"></div>
+</div>
+                                </div>
+                            </div>
+                        </div>
+
+
+                            <button class="btn btn--radius-2 btn--red" type="submit" name="update">Update</button>
+                        </div>
+                    </form>
                 </div>
-            </main>
+            </div>
         </div>
-        <div class="left-sidebar-hover"></div>
-        
-        <!-- Javascripts -->
-        <script src="assets/plugins/jquery/jquery-2.2.0.min.js"></script>
-        <script src="assets/plugins/materialize/js/materialize.min.js"></script>
-        <script src="assets/plugins/material-preloader/js/materialPreloader.min.js"></script>
-        <script src="assets/plugins/jquery-blockui/jquery.blockui.js"></script>
-        <script src="assets/js/alpha.min.js"></script>
-        <script src="assets/js/pages/form_elements.js"></script>
-        
-    </body>
+    </div>
+<?php }} ?>
+
+    <!-- Jquery JS-->
+    <script src="../vend/jquery/jquery.min.js"></script>
+    <!-- Vendor JS-->
+    <script src="../vend/select2/select2.min.js"></script>
+    <script src="../vend/datepicker/moment.min.js"></script>
+    <script src="../vend/datepicker/daterangepicker.js"></script>
+
+    <!-- Main JS-->
+    <script src="../j/global.js"></script>
+
+</body><!-- This templates was made by Colorlib (https://colorlib.com) -->
+
 </html>
-<?php } ?> 
+<!-- end document-->
+<?php } ?>
